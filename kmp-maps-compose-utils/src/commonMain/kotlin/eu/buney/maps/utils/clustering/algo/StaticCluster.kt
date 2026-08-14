@@ -20,7 +20,9 @@ internal class StaticCluster<T : ClusterItem>(
 
     override val size: Int get() = _items.size
 
-    override fun hashCode(): Int = 31 * position.hashCode() + _items.hashCode()
+    // 聚类在构建过程中会持续增删条目，不能让可变集合参与 HashSet 的哈希计算。
+    // 否则对象加入 HashSet 后哈希值会变化，Kotlin/Native 在扩容重哈希时会抛出异常。
+    override fun hashCode(): Int = position.hashCode()
 
     override fun equals(other: Any?): Boolean {
         if (other !is StaticCluster<*>) return false

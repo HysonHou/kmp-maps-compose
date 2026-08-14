@@ -10,6 +10,7 @@ import androidx.compose.ui.use
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.interpretCPointer
+import kotlinx.cinterop.useContents
 import org.jetbrains.skia.ColorType
 import org.jetbrains.skia.Image
 import platform.CoreGraphics.CGBitmapContextCreate
@@ -151,12 +152,37 @@ internal fun Image.toUIImage(): UIImage {
         try {
             val cgImage = CGBitmapContextCreateImage(context)
                 ?: error("Failed to create CGImage from context")
-            return UIImage.imageWithCGImage(cgImage, scale, orientation = UIImageOrientation.UIImageOrientationUp)
+            // CGImage 会引用 Skia pixmap 的原始内存；renderComposeScene 返回后该内存可被复用，
+            // 造成 Google Maps 读取 marker 图标时出现局部裁切或错乱。通过 UIKit 重绘一次，
+            // 让 UIImage 持有独立的像素缓冲区。
+            val transientImage = UIImage.imageWithCGImage(
+                cgImage,
+                scale,
+                orientation = UIImageOrientation.UIImageOrientationUp,
+            )
+            return transientImage.copyToOwnedImage()
         } finally {
             CGContextRelease(context)
         }
     } finally {
         CGColorSpaceRelease(colorSpace)
+    }
+}
+
+/** 将可能引用外部像素缓冲区的图片复制为 UIKit 自己持有的位图。 */
+@OptIn(ExperimentalForeignApi::class)
+private fun UIImage.copyToOwnedImage(): UIImage {
+    val imageSize = size
+    UIGraphicsBeginImageContextWithOptions(imageSize, false, scale)
+    try {
+        imageSize.useContents {
+            drawInRect(CGRectMake(0.0, 0.0, width, height))
+        }
+        return requireNotNull(UIGraphicsGetImageFromCurrentImageContext()) {
+            "Failed to copy marker image"
+        }
+    } finally {
+        UIGraphicsEndImageContext()
     }
 }
 
