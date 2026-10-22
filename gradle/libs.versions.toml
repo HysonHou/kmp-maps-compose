@@ -1,5 +1,5 @@
 [versions]
-kmp-maps-compose = "0.6.1"
+kmp-maps-compose = "0.6.2"
 kotlin = "2.3.21"
 compose = "1.11.0"
 agp = "9.2.1"
@@ -16,7 +16,7 @@ spmForKmp = "1.9.1"
 vanniktechMavenPublish = "0.36.0"
 
 [libraries]
-kmp-maps-compose = { module = "eu.buney.maps:kmp-maps-compose", version.ref = "kmp-maps-compose" }
+kmp-maps-compose = { module = "io.github.hysonhou:kmp-maps-compose", version.ref = "kmp-maps-compose" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 compose-components-resources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "compose" }
 google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "maps-compose" }

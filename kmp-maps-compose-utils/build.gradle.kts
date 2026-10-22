@@ -14,7 +14,7 @@ composeCompiler {
     metricsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
-group = "eu.buney.maps"
+group = "io.github.hysonhou"
 version = libs.versions.kmp.maps.compose.get()
 
 kotlin {
@@ -59,7 +59,7 @@ mavenPublishing {
         name = "Maps Compose Multiplatform - Utils"
         description = "Utilities (clustering, animation) for kmp-maps-compose"
         inceptionYear = "2025"
-        url = "https://github.com/yankeppey/kmp-maps-compose"
+        url = "https://github.com/HysonHou/kmp-maps-compose"
         licenses {
             license {
                 name = "The Apache License, Version 2.0"
@@ -68,6 +68,11 @@ mavenPublishing {
         }
         developers {
             developer {
+                id = "HysonHou"
+                name = "HysonHou"
+                url = "https://github.com/HysonHou"
+            }
+            developer {
                 id = "yankeppey"
                 name = "Andrei Buneyeu"
                 email = "yankeppey@gmail.com"
@@ -75,9 +80,9 @@ mavenPublishing {
             }
         }
         scm {
-            url = "https://github.com/yankeppey/kmp-maps-compose"
-            connection = "scm:git:git://github.com/yankeppey/kmp-maps-compose.git"
-            developerConnection = "scm:git:ssh://git@github.com/yankeppey/kmp-maps-compose.git"
+            url = "https://github.com/HysonHou/kmp-maps-compose"
+            connection = "scm:git:git://github.com/HysonHou/kmp-maps-compose.git"
+            developerConnection = "scm:git:ssh://git@github.com/HysonHou/kmp-maps-compose.git"
         }
     }
 }

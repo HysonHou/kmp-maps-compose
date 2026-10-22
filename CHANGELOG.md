@@ -1,5 +1,46 @@
 # Changelog
 
+## 0.6.2
+
+Based on [android-maps-compose 8.4.0](https://github.com/googlemaps/android-maps-compose).
+
+**SDK Versions:**
+
+- Google Maps iOS SDK: 10.8.0
+- Google Play Services Maps: 20.0.0
+
+### Features
+
+- **Cached clustering icons** - Added `clusterItemIcon` for rendering unclustered items with cached `BitmapDescriptor`s, plus `clusterItemAnchor` for icon alignment. `clusterItemIcon` takes precedence over `clusterItemContent` and avoids generating a Compose bitmap for each item.
+- **Marker content keys** - Added `clusterItemContentKey` to control when Compose item marker bitmaps are rebuilt.
+- **Marker visibility** - Added `markerVisibility` to control cluster and item marker rendering without changing cluster membership or split/merge calculations.
+
+### Bug Fixes
+
+- **Clustering concurrency** - Serialized item updates and cluster calculations with a mutex and moved item updates to the configured coroutine context to prevent concurrent access to the algorithm's QuadTree.
+- **Cluster hash stability** - Removed mutable item collections from `StaticCluster.hashCode()` to prevent hash changes after insertion into a set and Kotlin/Native rehash failures.
+- **Android marker bitmap caching** - Stopped using the content lambda as a cache key in `rememberComposeBitmapDescriptor`, avoiding bitmap regeneration caused by changing lambda references during recomposition.
+- **iOS marker image corruption** - Copied rendered marker images into UIKit-owned pixel buffers to prevent partial clipping or corrupted icons when Skia pixel memory is reused.
+
+### Compatibility Changes
+
+- `ClusterManager.setItems()` is now a suspending function. Direct callers must invoke it from a coroutine or another suspending function.
+- Changes to content passed to Android `rememberComposeBitmapDescriptor` must be represented in its explicit keys to trigger bitmap regeneration.
+- Removed the `iosX64` target from both libraries and the shared sample. The supported iOS targets are now `iosArm64` and `iosSimulatorArm64`.
+- Raised `compileSdk` from 36 to 37 for both libraries and the Android sample modules. Android `minSdk` remains 24 and the sample's `targetSdk` remains 36.
+
+### Build and Dependencies
+
+- Updated Kotlin from 2.3.20 to 2.3.21, Compose Multiplatform from 1.10.3 to 1.11.0, AGP from 9.1.0 to 9.2.1, maps-compose from 8.3.0 to 8.4.0, and spmForKmp from 1.7.0 to 1.9.1.
+- Configured the Gradle daemon to use JDK 21.
+- Lowered the Google Maps Swift bridge's configured minimum iOS version from 17.0 to 16.0 in both the Gradle SPM configuration and exported Swift package.
+
+### Publishing
+
+- Added `bundleMavenCentral` to build a signed upload ZIP for both libraries locally, for manual upload through the Central Portal.
+- Changed the Maven group for both libraries from `eu.buney.maps` to `io.github.hysonhou` for independent fork releases. Kotlin packages and Android namespaces remain unchanged.
+- Updated Maven POM project and SCM URLs to the HysonHou fork and added its maintainer while retaining upstream attribution.
+
 ## 0.6.1
 
 Based on [android-maps-compose 8.3.0](https://github.com/googlemaps/android-maps-compose).

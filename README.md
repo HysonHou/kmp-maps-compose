@@ -1,10 +1,12 @@
-[![Maven Central](https://img.shields.io/maven-central/v/eu.buney.maps/kmp-maps-compose)](https://central.sonatype.com/artifact/eu.buney.maps/kmp-maps-compose)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.hysonhou/kmp-maps-compose)](https://central.sonatype.com/artifact/io.github.hysonhou/kmp-maps-compose)
 
 # Maps Compose Multiplatform
 
 A Kotlin Compose Multiplatform library providing Google Maps integration for Android and iOS with a unified API. Designed as a drop-in multiplatform replacement for [android-maps-compose](https://github.com/googlemaps/android-maps-compose).
 
 ![Sample app running on iOS and Android](images/demo-android-ios.jpg)
+
+This fork is maintained at [HysonHou/kmp-maps-compose](https://github.com/HysonHou/kmp-maps-compose), based on [yankeppey/kmp-maps-compose](https://github.com/yankeppey/kmp-maps-compose). Maven coordinates use `io.github.hysonhou`; Kotlin packages remain `eu.buney.maps`.
 
 ## Installation
 
@@ -14,14 +16,49 @@ Add the dependency to your `build.gradle.kts`:
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("eu.buney.maps:kmp-maps-compose:0.6.1")
+            implementation("io.github.hysonhou:kmp-maps-compose:0.6.2")
 
             // Optional: clustering utilities
-            implementation("eu.buney.maps:kmp-maps-compose-utils:0.6.1")
+            implementation("io.github.hysonhou:kmp-maps-compose-utils:0.6.2")
         }
     }
 }
 ```
+
+### Build a bundle for manual Maven Central upload
+
+Configure your PGP signing key locally, using environment variables or your user-level
+`~/.gradle/gradle.properties` file. Keep private keys and passwords out of this repository.
+For the properties file, use:
+
+```properties
+signingInMemoryKey=<ASCII-armored private key with line breaks escaped as \n>
+signingInMemoryKeyId=<signing key ID>
+signingInMemoryKeyPassword=<signing key password>
+```
+
+The public key must be available as described in the
+[Maven Central GPG requirements](https://central.sonatype.org/publish/requirements/gpg/),
+and your Central account must own the verified `io.github.hysonhou` namespace.
+
+Run this command from the repository root on macOS with Xcode installed:
+
+```shell
+./gradlew bundleMavenCentral --no-configuration-cache
+```
+
+This builds both libraries for Android, iOS devices (`iosArm64`), and Apple Silicon
+simulators (`iosSimulatorArm64`), along with their multiplatform metadata, sources,
+Javadoc archives, signatures, and checksums. It stages them in
+`build/manual-maven-repository/` and creates
+`build/distributions/kmp-maps-compose-0.6.2-maven-central.zip`.
+The task only builds local files and does not require Central API credentials.
+
+Upload the ZIP using **Publish Component** on the
+[Central Portal deployments page](https://central.sonatype.com/publishing/deployments).
+See the [official bundle upload guide](https://central.sonatype.org/publish/publish-portal-upload/).
+`publishToMavenCentral` is a separate task that uploads directly; use `bundleMavenCentral`
+when you want to upload the file yourself.
 
 ### API Key Setup
 
