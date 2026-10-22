@@ -27,7 +27,7 @@ kotlin {
 
     androidLibrary {
         namespace = "eu.buney.maps"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 24
 
         compilerOptions {
@@ -45,7 +45,7 @@ kotlin {
         }
 
         iosTarget.swiftPackageConfig(cinteropName = "GoogleMapsBridge") {
-            minIos = "17.0"
+            minIos = "16.0"
             dependency {
                 remotePackageVersion(
                     url = uri("https://github.com/googlemaps/ios-maps-sdk"),

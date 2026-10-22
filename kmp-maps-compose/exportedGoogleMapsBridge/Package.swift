@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "exportedGoogleMapsBridge",
-    platforms: [.iOS("17.0"),.macOS("10.13"),.tvOS("12.0"),.watchOS("4.0")],
+    platforms: [.iOS("16.0"),.macOS("10.13"),.tvOS("12.0"),.watchOS("4.0")],
     products: [
         .library(
             name: "exportedGoogleMapsBridge",
@@ -21,6 +21,7 @@ let package = Package(
                 .product(name: "GoogleMaps", package: "ios-maps-sdk")
             ],
             path: "Sources"
+            
             
         )
         

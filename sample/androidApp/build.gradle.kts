@@ -14,7 +14,7 @@ if (secretsPropertiesFile.exists()) {
 
 android {
     namespace = "eu.buney.sample"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "eu.buney.maps.sample"
